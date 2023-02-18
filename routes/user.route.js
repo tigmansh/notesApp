@@ -2,7 +2,7 @@ const express = require("express");
 const { userModel } = require("../model/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+require("dotenv").config();
 const userRouter = express.Router();
 
 // Hashing the password while registering the user 👇
@@ -35,7 +35,7 @@ userRouter.post("/login", async (req, res) => {
     if (user.length > 0) {
       bcrypt.compare(pass, hashed_pass, (err, result) => {
         if (result) {
-          const token = jwt.sign({ userID: user[0]._id }, "masai", {
+          const token = jwt.sign({ userID: user[0]._id }, process.env.key, {
             expiresIn: "1h",
           });
           res.send({ msg: "Login Successful", token: token });
