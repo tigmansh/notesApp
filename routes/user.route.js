@@ -36,7 +36,7 @@ userRouter.post("/login", async (req, res) => {
       bcrypt.compare(pass, hashed_pass, (err, result) => {
         if (result) {
           const token = jwt.sign({ userID: user[0]._id }, process.env.key, {
-            expiresIn: "1h",
+            expiresIn: 18000,
           });
           res.send({ msg: "Login Successful", token: token });
         } else {

@@ -1,19 +1,13 @@
 const express = require("express");
 const { noteModel } = require("../model/note.model");
-const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const noteRouter = express.Router();
 
 // this route will get the notes of that particular user only who is looged in
 
 noteRouter.get("/", async (req, res) => {
-  const token = req.headers.authorization;
   try {
-    const decoded_token = jwt.verify(token, process.env.key);
-
-    const userID = decoded_token.userID;
-
-    const userData = await noteModel.find({ userID: userID });
+    const userData = await noteModel.find({ userID: req.body.userID });
     if (userData.length > 0) {
       res.send(userData);
     } else {
